@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generation Rescue - Depths to Heights</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #a78bfa;
+            --accent: #fbbf24;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f9fafb;
+            --dark: #1f2937;
+            --gradient1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.9;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Main Container */
+        .app-container {
+            max-width: 450px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 40px rgba(0,0,0,0.2);
+        }
+
+        /* Header */
+        .app-header {
+            background: var(--gradient1);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .app-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .app-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Screen Management */
+        .screen {
+            display: none;
+            padding: 20px;
+            animation: fadeInUp 0.5s ease;
+            padding-bottom: 80px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hook Screen */
+        .hook-container {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .family-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: heartbeat 2s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hook-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .hook-verse {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .hook-verse p {
+            font-style: italic;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .hook-verse cite {
+            display: block;
+            text-align: right;
+            margin-top: 10px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Action Cards */
+        .action-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+
+        .action-card.urgent {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+        }
+
+        .action-card.parent {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+        }
+
+        .action-card.teen {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(79, 172, 254, 0.1) 100%);
+        }
+
+        .action-card.family {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* Prayer Section */
+        .prayer-box {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .prayer-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .prayer-text {
+            font-size: 16px;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        /* Check-in Cards */
+        .checkin-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .mood-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+
+        .mood-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .mood-card.selected {
+            background: var(--gradient1);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .mood-emoji {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .mood-label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Devotional Card */
+        .devotional-card {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .devotional-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .devotional-day {
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+
+        .devotional-title {
+            flex: 1;
+        }
+
+        .devotional-title h3 {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .devotional-title p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Resource List */
+        .resource-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .resource-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-info h4 {
+            font-size: 16px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .resource-info p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* Emergency Protocol */
+        .emergency-section {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .emergency-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .emergency-steps {
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .emergency-steps ol {
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        .emergency-steps li {
+            margin-bottom: 10px;
+        }
+
+        /* Forms */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea.input-field {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--gradient1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            color: white;
+        }
+
+        .btn-full {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        /* Progress Tracker */
+        .progress-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .progress-percentage {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            height: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient1);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* Community Section */
+        .community-post {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        .post-info {
+            flex: 1;
+        }
+
+        .post-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .post-content {
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .post-action {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .post-action:hover {
+            color: var(--primary);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6b7280;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        /* Audio Toggle */
+        .audio-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 101;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .audio-btn.muted {
+            background: #e5e7eb;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 5px 12px;
+            background: var(--gradient1);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .tag.green {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+
+        .tag.yellow {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        }
+
+        .tag.red {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .app-container {
+                max-width: 100%;
+            }
+            
+            .checkin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Crisis Alert */
+        .crisis-alert {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .crisis-alert strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation"></div>
+
+    <!-- Audio Toggle -->
+    <div class="audio-btn" id="audioToggle" onclick="toggleAudio()">
+        <span id="audioIcon">🔊</span>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- App Header -->
+        <div class="app-header">
+            <h1>Generation Rescue</h1>
+            <p>Biblical Support for Teen Mental Health</p>
+        </div>
+
+        <!-- Hook Screen -->
+        <div class="screen active" id="hookScreen">
+            <div class="hook-container">
+                <div class="family-icon">👨‍👩‍👧‍👦</div>
+                <h2 class="hook-title">Your Family Is Not Alone</h2>
+                <div class="hook-verse">
+                    <p>"Train up a child in the way he should go; even when he is old he will not depart from it."</p>
+                    <cite>- Proverbs 22:6</cite>
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="showScreen('userSelect')">
+                    Begin Your Journey
+                </button>
+                
+                <button class="btn btn-warning btn-full" onclick="showScreen('emergency')">
+                    ⚠️ Teen in Crisis Now
+                </button>
+            </div>
+        </div>
+
+        <!-- User Selection Screen -->
+        <div class="screen" id="userSelect">
+            <h2 style="text-align: center; margin-bottom: 30px; color: var(--primary);">Who are you?</h2>
+            
+            <div class="action-card parent" onclick="setUser('parent'); showScreen('parentHome')">
+                <div class="card-icon">👨‍👩‍👧</div>
+                <div class="card-title">I'm a Parent</div>
+                <div class="card-description">Access resources, prayers, and support for your teen</div>
+            </div>
+
+            <div class="action-card teen" onclick="setUser('teen'); showScreen('teenHome')">
+                <div class="card-icon">🧑‍🎓</div>
+                <div class="card-title">I'm a Teen</div>
+                <div class="card-description">Find help, hope, and your identity in Christ</div>
+            </div>
+
+            <div class="action-card family" onclick="setUser('family'); showScreen('familyHome')">
+                <div class="card-icon">👨‍👩‍👧‍👦</div>
+                <div class="card-title">Family Together</div>
+                <div class="card-description">Work through challenges as a united family</div>
+            </div>
+        </div>
+
+        <!-- Parent Home Screen -->
+        <div class="screen" id="parentHome">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Parent Dashboard</h2>
+            
+            <div class="prayer-box">
+                <div class="prayer-title">Today's Parent Prayer Armor</div>
+                <div class="prayer-text">
+                    "Lord, give me wisdom beyond my own understanding. Help me see my teen through Your eyes. Grant me patience when I'm frustrated, love when I'm hurt, and faith when I'm afraid. Equip me to be the parent You've called me to be. Amen."
+                </div>
+            </div>
+
+            <div class="action-card" onclick="showScreen('parentGuidance')">
+                <div class="card-icon">📖</div>
+                <div class="card-title">Biblical Parenting Guidance</div>
+                <div class="card-description">Scriptural wisdom for specific challenges</div>
+            </div>
+
+            <div class="action-card" onclick="showScreen('teenCheck')">
+                <div class="card-icon">💬</div>
+                <div class="card-title">Teen Check-In Tools</div>
+                <div class="card-description">Conversation starters and assessment helps</div>
+            </div>
+
+            <div class="action-card" onclick="showScreen('community')">
+                <div class="card-icon">🤝</div>
+                <div class="card-title">Parent Community</div>
+                <div class="card-description">Connect with other Christian parents</div>
+            </div>
+
+            <div class="action-card" onclick="showScreen('resources')">
+                <div class="card-icon">📚</div>
+                <div class="card-title">Professional Resources</div>
+                <div class="card-description">Find counselors and youth pastors</div>
+            </div>
+        </div>
+
+        <!-- Teen Home Screen -->
+        <div class="screen" id="teenHome">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--success);">Hey There! 👋</h2>
+            
+            <div class="devotional-card">
+                <div class="devotional-header">
+                    <div class="devotional-day">💚</div>
+                    <div class="devotional-title">
+                        <h3>You Matter More Than You Know</h3>
+                        <p>God sees you. He knows you. He loves you.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin: 20px 0; color: var(--dark);">How are you feeling today?</h3>
+            <div class="checkin-grid">
+                <div class="mood-card" onclick="selectMood('great', this)">
+                    <div class="mood-emoji">😊</div>
+                    <div class="mood-label">Great</div>
+                </div>
+                <div class="mood-card" onclick="selectMood('okay', this)">
+                    <div class="mood-emoji">😐</div>
+                    <div class="mood-label">Okay</div>
+                </div>
+                <div class="mood-card" onclick="selectMood('struggling', this)">
+                    <div class="mood-emoji">😔</div>
+                    <div class="mood-label">Struggling</div>
+                </div>
+                <div class="mood-card" onclick="selectMood('help', this)">
+                    <div class="mood-emoji">🆘</div>
+                    <div class="mood-label">Need Help</div>
+                </div>
+            </div>
+
+            <div class="action-card teen" onclick="showScreen('teenIdentity')">
+                <div class="card-icon">✨</div>
+                <div class="card-title">Who God Says You Are</div>
+                <div class="card-description">Discover your true identity in Christ</div>
+            </div>
+
+            <div class="action-card teen" onclick="showScreen('teenCoping')">
+                <div class="card-icon">🛡️</div>
+                <div class="card-title">Coping Skills</div>
+                <div class="card-description">Biblical tools for tough times</div>
+            </div>
+
+            <div class="action-card teen" onclick="showScreen('teenTalk')">
+                <div class="card-icon">💬</div>
+                <div class="card-title">Need to Talk?</div>
+                <div class="card-description">Safe places to get help</div>
+            </div>
+        </div>
+
+        <!-- Family Home Screen -->
+        <div class="screen" id="familyHome">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--accent);">Family Unity Center</h2>
+            
+            <div class="devotional-card">
+                <div class="devotional-header">
+                    <div class="devotional-day">1</div>
+                    <div class="devotional-title">
+                        <h3>30-Day Family Healing Journey</h3>
+                        <p>Day 1: Building Trust Through Truth</p>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; line-height: 1.6;">
+                    Today we begin with honesty. Each family member shares one thing they're grateful for and one thing they're struggling with. No judgment, just listening.
+                </p>
+                <button class="btn btn-primary" style="margin-top: 15px;" onclick="showScreen('familyDevotional')">
+                    Start Today's Devotional
+                </button>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-title">Family Healing Progress</span>
+                    <span class="progress-percentage">3%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 3%;"></div>
+                </div>
+            </div>
+
+            <div class="action-card family" onclick="showScreen('familyActivities')">
+                <div class="card-icon">🎯</div>
+                <div class="card-title">Family Activities</div>
+                <div class="card-description">Bonding exercises that build trust</div>
+            </div>
+
+            <div class="action-card family" onclick="showScreen('familyPrayer')">
+                <div class="card-icon">🙏</div>
+                <div class="card-title">Pray Together</div>
+                <div class="card-description">Guided family prayer sessions</div>
+            </div>
+        </div>
+
+        <!-- Parent Guidance Screen -->
+        <div class="screen" id="parentGuidance">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Biblical Guidance</h2>
+            
+            <h3 style="margin-bottom: 15px;">What are you dealing with?</h3>
+            
+            <div class="action-card" onclick="showGuidance('anxiety')">
+                <div class="card-icon">😰</div>
+                <div class="card-title">Teen Anxiety</div>
+                <div class="card-description">Biblical approach to anxiety and worry</div>
+            </div>
+
+            <div class="action-card" onclick="showGuidance('depression')">
+                <div class="card-icon">😢</div>
+                <div class="card-title">Teen Depression</div>
+                <div class="card-description">Supporting through the valley</div>
+            </div>
+
+            <div class="action-card" onclick="showGuidance('selfharm')">
+                <div class="card-icon">💔</div>
+                <div class="card-title">Self-Harm</div>
+                <div class="card-description">Responding with love and wisdom</div>
+            </div>
+
+            <div class="action-card" onclick="showGuidance('rebellion')">
+                <div class="card-icon">😤</div>
+                <div class="card-title">Rebellion & Anger</div>
+                <div class="card-description">Setting boundaries with grace</div>
+            </div>
+
+            <div class="action-card" onclick="showGuidance('addiction')">
+                <div class="card-icon">⛓️</div>
+                <div class="card-title">Addiction Issues</div>
+                <div class="card-description">Breaking chains through Christ</div>
+            </div>
+        </div>
+
+        <!-- Teen Identity Screen -->
+        <div class="screen" id="teenIdentity">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--success);">Who God Says You Are</h2>
+            
+            <div class="devotional-card">
+                <p style="font-size: 18px; text-align: center; line-height: 1.8;">
+                    You are <span class="tag green">LOVED</span><br>
+                    You are <span class="tag green">CHOSEN</span><br>
+                    You are <span class="tag green">FORGIVEN</span><br>
+                    You are <span class="tag green">VALUABLE</span><br>
+                    You are <span class="tag green">PURPOSEFUL</span><br>
+                    You are <span class="tag green">NEVER ALONE</span>
+                </p>
+            </div>
+
+            <div class="prayer-box">
+                <div class="prayer-title">Your Identity Verses</div>
+                <div class="prayer-text">
+                    "I am fearfully and wonderfully made" - Psalm 139:14<br><br>
+                    "I am a new creation in Christ" - 2 Corinthians 5:17<br><br>
+                    "I am God's masterpiece" - Ephesians 2:10
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" onclick="showScreen('teenHome')">
+                Back to Dashboard
+            </button>
+        </div>
+
+        <!-- Emergency Protocol Screen -->
+        <div class="screen" id="emergency">
+            <div class="emergency-section">
+                <div class="emergency-title">⚠️ TEEN CRISIS PROTOCOL ⚠️</div>
+                
+                <div class="emergency-steps">
+                    <h3>Immediate Steps:</h3>
+                    <ol>
+                        <li><strong>PRAY:</strong> "Lord, give me wisdom and peace right now."</li>
+                        <li><strong>ENSURE SAFETY:</strong> Remove any means of harm</li>
+                        <li><strong>STAY CALM:</strong> Your peace will help them</li>
+                        <li><strong>LISTEN:</strong> Don't judge, just be present</li>
+                        <li><strong>GET HELP:</strong> Call professionals if needed</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="crisis-alert">
+                <strong>Crisis Hotline</strong>
+                Contact your local emergency services or crisis helpline immediately
+            </div>
+
+            <button class="btn btn-warning btn-full" onclick="showScreen('emergencyContacts')">
+                📞 Emergency Contacts
+            </button>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('parentHome')">
+                Return to Dashboard
+            </button>
+        </div>
+
+        <!-- Community Screen -->
+        <div class="screen" id="community">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Parent Community</h2>
+            
+            <div class="community-post">
+                <div class="post-header">
+                    <div class="post-avatar">SM</div>
+                    <div class="post-info">
+                        <div class="post-name">Sarah M.</div>
+                        <div class="post-time">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    My 15-year-old finally opened up about their anxiety. We're starting counseling next week. Prayers appreciated! God is faithful. 🙏
+                </div>
+                <div class="post-actions">
+                    <button class="post-action">🙏 Pray</button>
+                    <button class="post-action">💬 Comment</button>
+                    <button class="post-action">❤️ Support</button>
+                </div>
+            </div>
+
+            <div class="community-post">
+                <div class="post-header">
+                    <div class="post-avatar">JD</div>
+                    <div class="post-info">
+                        <div class="post-name">John D.</div>
+                        <div class="post-time">1 day ago</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Breakthrough! After months of prayer and patience, my son is engaging in family devotionals again. Don't give up, parents!
+                </div>
+                <div class="post-actions">
+                    <button class="post-action">🙏 Pray</button>
+                    <button class="post-action">💬 Comment</button>
+                    <button class="post-action">❤️ Support</button>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" onclick="showNewPost()">
+                ✏️ Share Your Story
+            </button>
+        </div>
+
+        <!-- Resources Screen -->
+        <div class="screen" id="resources">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Professional Resources</h2>
+            
+            <div class="resource-item" onclick="showResourceDetail('counselors')">
+                <div class="resource-icon">🧠</div>
+                <div class="resource-info">
+                    <h4>Christian Counselors</h4>
+                    <p>Find licensed therapists who integrate faith</p>
+                </div>
+            </div>
+
+            <div class="resource-item" onclick="showResourceDetail('pastors')">
+                <div class="resource-icon">⛪</div>
+                <div class="resource-info">
+                    <h4>Youth Pastors</h4>
+                    <p>Connect with trained youth ministers</p>
+                </div>
+            </div>
+
+            <div class="resource-item" onclick="showResourceDetail('programs')">
+                <div class="resource-icon">🏥</div>
+                <div class="resource-info">
+                    <h4>Treatment Programs</h4>
+                    <p>Faith-based recovery and support programs</p>
+                </div>
+            </div>
+
+            <div class="resource-item" onclick="showResourceDetail('books')">
+                <div class="resource-icon">📚</div>
+                <div class="resource-info">
+                    <h4>Recommended Books</h4>
+                    <p>Biblical resources for teen mental health</p>
+                </div>
+            </div>
+
+            <div class="resource-item" onclick="showResourceDetail('online')">
+                <div class="resource-icon">💻</div>
+                <div class="resource-info">
+                    <h4>Online Support</h4>
+                    <p>Virtual counseling and support groups</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teen Check-In Screen -->
+        <div class="screen" id="teenCheck">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Teen Check-In Guide</h2>
+            
+            <div class="devotional-card">
+                <h3 style="margin-bottom: 15px;">Conversation Starters</h3>
+                <ul style="line-height: 2; padding-left: 20px;">
+                    <li>"What's been the best part of your week?"</li>
+                    <li>"Is there anything weighing on your heart?"</li>
+                    <li>"How can I pray for you specifically?"</li>
+                    <li>"What's one thing I could do to support you better?"</li>
+                    <li>"Have you felt God's presence lately?"</li>
+                </ul>
+            </div>
+
+            <div class="prayer-box">
+                <div class="prayer-title">Warning Signs to Watch</div>
+                <div style="text-align: left;">
+                    <span class="tag red">Isolation</span>
+                    <span class="tag red">Sleep changes</span>
+                    <span class="tag red">Mood swings</span>
+                    <span class="tag red">Academic decline</span>
+                    <span class="tag red">Loss of interest</span>
+                    <span class="tag red">Substance use</span>
+                    <span class="tag red">Self-harm signs</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" onclick="showScreen('assessmentTool')">
+                Start Assessment Tool
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button class="nav-item" onclick="navigateHome()">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('emergency')">
+            <span class="nav-icon">🚨</span>
+            <span class="nav-label">Crisis</span>
+        </button>
+        <button class="nav-item" onclick="showScreen('resources')">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Resources</span>
+        </button>
+        <button class="nav-item" onclick="showInfo()">
+            <span class="nav-icon">ℹ️</span>
+            <span class="nav-label">Info</span>
+        </button>
+        <button class="nav-item" onclick="showAbout()">
+            <span class="nav-icon">❤️</span>
+            <span class="nav-label">About</span>
+        </button>
+    </div>
+
+    <!-- Info Modal -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">About Generation Rescue</h2>
+                <button class="modal-close" onclick="closeModal('infoModal')">×</button>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">What is Generation Rescue?</h3>
+                <p style="line-height: 1.6;">A family-based biblical app for Christian parents and teens navigating mental health challenges together. Provides prayers, guidance, check-in tools, and community support rooted in Scripture.</p>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">How to Use</h3>
+                <ul style="line-height: 1.8; padding-left: 20px;">
+                    <li>Choose your role: Parent, Teen, or Family</li>
+                    <li>Access daily prayers and devotionals</li>
+                    <li>Use check-in tools to monitor wellbeing</li>
+                    <li>Find biblical guidance for specific issues</li>
+                    <li>Connect with community and resources</li>
+                </ul>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">Installing on Your Phone</h3>
+                <p><strong>iPhone:</strong> Tap share button, then "Add to Home Screen"</p>
+                <p><strong>Android:</strong> Tap menu (3 dots), then "Add to Home Screen"</p>
+            </div>
+
+            <div class="crisis-alert">
+                <strong>Crisis Support:</strong>
+                If you are in crisis, please contact your local helpline for immediate support.
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Depths to Heights</h2>
+                <button class="modal-close" onclick="closeModal('aboutModal')">×</button>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">Our Mission</h3>
+                <p style="line-height: 1.6;">Equipping Christian families with biblical tools and support to navigate teen mental health challenges, bringing hope and healing through faith.</p>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <h3 style="color: var(--primary); margin-bottom: 10px;">Created By</h3>
+                <p><strong>Made by Justin</strong><br>
+                Depths to Heights<br>
+                <a href="https://depthstoheights.org" style="color: var(--primary);">depthstoheights.org</a><br>
+                <a href="mailto:depthstoheights@gmail.com" style="color: var(--primary);">depthstoheights@gmail.com</a></p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%); padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px;">
+                <h3 style="color: var(--primary);">Support This Work</h3>
+                <p>If this app has helped your family, consider supporting Depths to Heights. Your donation helps us create more free tools for families in crisis.</p>
+                <button class="btn btn-primary" style="margin-top: 10px;" onclick="alert('PayPal donation link will go here')">
+                    💜 Donate via PayPal
+                </button>
+            </div>
+
+            <div class="crisis-alert">
+                <strong>Remember:</strong>
+                You are not alone. God is with you. Help is available.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Audio Management
+        let audioContext;
+        let isPlaying = false;
+        let userType = null;
+
+        function initAudio() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create hopeful, uplifting tone
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(261.63, audioContext.currentTime); // C4 note
+            
+            gainNode.gain.setValueAtTime(0.02, audioContext.currentTime); // Very quiet
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            isPlaying = true;
+        }
+
+        function toggleAudio() {
+            const icon = document.getElementById('audioIcon');
+            const toggle = document.getElementById('audioToggle');
+            
+            if (!audioContext) {
+                initAudio();
+                icon.textContent = '🔊';
+                toggle.classList.remove('muted');
+            } else if (isPlaying) {
+                audioContext.suspend();
+                isPlaying = false;
+                icon.textContent = '🔇';
+                toggle.classList.add('muted');
+            } else {
+                audioContext.resume();
+                isPlaying = true;
+                icon.textContent = '🔊';
+                toggle.classList.remove('muted');
+            }
+        }
+
+        // User Management
+        function setUser(type) {
+            userType = type;
+            localStorage.setItem('generationRescueUser', type);
+            playClickSound();
+        }
+
+        // Navigation
+        function showScreen(screenId) {
+            playClickSound();
+            
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            setTimeout(() => {
+                document.getElementById(screenId).classList.add('active');
+                window.scrollTo(0, 0);
+            }, 100);
+        }
+
+        function navigateHome() {
+            if (userType === 'parent') {
+                showScreen('parentHome');
+            } else if (userType === 'teen') {
+                showScreen('teenHome');
+            } else if (userType === 'family') {
+                showScreen('familyHome');
+            } else {
+                showScreen('userSelect');
+            }
+        }
+
+        // Mood Selection
+        function selectMood(mood, element) {
+            document.querySelectorAll('.mood-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            // Save mood
+            const today = new Date().toDateString();
+            localStorage.setItem('teenMood_' + today, mood);
+            
+            // Respond based on mood
+            if (mood === 'help') {
+                setTimeout(() => {
+                    if (confirm('It sounds like you need support. Would you like to see crisis resources?')) {
+                        showScreen('emergency');
+                    }
+                }, 500);
+            } else if (mood === 'struggling') {
+                setTimeout(() => {
+                    alert('Remember: You are loved and valued. Consider talking to someone you trust today.');
+                }, 500);
+            }
+            
+            playClickSound();
+        }
+
+        // Show Guidance
+        function showGuidance(topic) {
+            const guidanceContent = {
+                anxiety: {
+                    title: "Teen Anxiety",
+                    scripture: "Cast all your anxiety on Him because He cares for you. - 1 Peter 5:7",
+                    tips: [
+                        "Pray together daily about specific worries",
+                        "Create a 'worry box' where they can place written concerns",
+                        "Practice breathing prayers: 'Lord, give peace'",
+                        "Limit social media and news exposure",
+                        "Encourage physical activity and outdoor time"
+                    ]
+                },
+                depression: {
+                    title: "Teen Depression",
+                    scripture: "The Lord is close to the brokenhearted. - Psalm 34:18",
+                    tips: [
+                        "Don't minimize their feelings - validate them",
+                        "Maintain routines but be flexible",
+                        "Encourage small, achievable goals",
+                        "Seek professional Christian counseling",
+                        "Remind them: This is a season, not a sentence"
+                    ]
+                },
+                selfharm: {
+                    title: "Self-Harm",
+                    scripture: "You are the temple of God. - 1 Corinthians 3:16",
+                    tips: [
+                        "React with love, not anger or shock",
+                        "Remove means of harm without shaming",
+                        "Seek immediate professional help",
+                        "Explore underlying pain together",
+                        "Provide alternative coping strategies"
+                    ]
+                },
+                rebellion: {
+                    title: "Rebellion & Anger",
+                    scripture: "Fathers, do not provoke your children to anger. - Ephesians 6:4",
+                    tips: [
+                        "Set clear, consistent boundaries",
+                        "Choose battles wisely",
+                        "Listen more than you lecture",
+                        "Model the behavior you want to see",
+                        "Pray for wisdom and patience daily"
+                    ]
+                },
+                addiction: {
+                    title: "Addiction Issues",
+                    scripture: "The truth will set you free. - John 8:32",
+                    tips: [
+                        "Address with love, not condemnation",
+                        "Seek professional addiction counseling",
+                        "Consider faith-based recovery programs",
+                        "Create accountability with grace",
+                        "Celebrate small victories"
+                    ]
+                }
+            };
+
+            const guidance = guidanceContent[topic];
+            if (guidance) {
+                alert(`${guidance.title}\n\n${guidance.scripture}\n\nKey Tips:\n${guidance.tips.join('\n')}}`);
+            }
+        }
+
+        // Resource Details
+        function showResourceDetail(type) {
+            const resources = {
+                counselors: "Search for 'Christian counselors near me' or visit the American Association of Christian Counselors website.",
+                pastors: "Contact local churches and ask about youth ministry programs and pastoral counseling.",
+                programs: "Look for Celebrate Recovery, Teen Challenge, or other faith-based programs in your area.",
+                books: "Recommended: 'Age of Opportunity' by Paul Tripp, 'The Anxious Teen' by Sheila Walsh",
+                online: "Consider BetterHelp Christian counseling, Faithful Counseling, or online support groups."
+            };
+            
+            alert(resources[type] || "Resource information coming soon.");
+        }
+
+        // Community Functions
+        function showNewPost() {
+            const post = prompt("Share your story or prayer request:");
+            if (post) {
+                alert("Your post has been shared with the community. You'll receive prayer and support soon.");
+            }
+        }
+
+        // Modal Functions
+        function showInfo() {
+            document.getElementById('infoModal').classList.add('active');
+        }
+
+        function showAbout() {
+            document.getElementById('aboutModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Sound Effects
+        function playClickSound() {
+            if (!audioContext || !isPlaying) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+            
+            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved user type
+            const savedUser = localStorage.getItem('generationRescueUser');
+            if (savedUser) {
+                userType = savedUser;
+            }
+            
+            // Initialize audio on first interaction
+            document.addEventListener('click', function initAudioContext() {
+                if (!audioContext) {
+                    // Audio will init on toggle
+                }
+            }, { once: true });
+        });
+
+        // Modal background click to close
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
