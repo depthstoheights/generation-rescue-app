@@ -319,6 +319,12 @@
             color: #6b7280;
         }
 
+        .devotional-content {
+            line-height: 1.8;
+            color: var(--dark);
+            margin: 15px 0;
+        }
+
         /* Resource List */
         .resource-item {
             background: white;
@@ -582,6 +588,47 @@
 
         .post-action:hover {
             color: var(--primary);
+        }
+
+        /* Guidance Content */
+        .guidance-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .guidance-scripture {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-style: italic;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .guidance-tips {
+            margin: 20px 0;
+        }
+
+        .guidance-tips h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .guidance-tips ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .guidance-tips li {
+            padding: 10px;
+            margin: 10px 0;
+            background: #f9fafb;
+            border-left: 3px solid var(--primary);
+            border-radius: 5px;
         }
 
         /* Bottom Navigation */
@@ -855,7 +902,7 @@
         <div class="screen" id="parentHome">
             <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Parent Dashboard</h2>
             
-            <div class="prayer-box">
+            <div class="prayer-box" id="dailyPrayerParent">
                 <div class="prayer-title">Today's Parent Prayer Armor</div>
                 <div class="prayer-text">
                     "Lord, give me wisdom beyond my own understanding. Help me see my teen through Your eyes. Grant me patience when I'm frustrated, love when I'm hurt, and faith when I'm afraid. Equip me to be the parent You've called me to be. Amen."
@@ -946,14 +993,14 @@
             
             <div class="devotional-card">
                 <div class="devotional-header">
-                    <div class="devotional-day">1</div>
+                    <div class="devotional-day" id="devotionalDay">1</div>
                     <div class="devotional-title">
                         <h3>30-Day Family Healing Journey</h3>
-                        <p>Day 1: Building Trust Through Truth</p>
+                        <p id="devotionalTitle">Day 1: Building Trust Through Truth</p>
                     </div>
                 </div>
-                <p style="margin-top: 15px; line-height: 1.6;">
-                    Today we begin with honesty. Each family member shares one thing they're grateful for and one thing they're struggling with. No judgment, just listening.
+                <p class="devotional-content" id="devotionalContent">
+                    Today we begin with honesty. Each family member shares one thing they're grateful for and one thing they're struggling with. No judgment, just listening. Read together: Ephesians 4:15 - "Speaking the truth in love."
                 </p>
                 <button class="btn btn-primary" style="margin-top: 15px;" onclick="showScreen('familyDevotional')">
                     Start Today's Devotional
@@ -963,10 +1010,10 @@
             <div class="progress-container">
                 <div class="progress-header">
                     <span class="progress-title">Family Healing Progress</span>
-                    <span class="progress-percentage">3%</span>
+                    <span class="progress-percentage" id="progressPercent">3%</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 3%;"></div>
+                    <div class="progress-fill" id="progressBar" style="width: 3%;"></div>
                 </div>
             </div>
 
@@ -989,34 +1036,53 @@
             
             <h3 style="margin-bottom: 15px;">What are you dealing with?</h3>
             
-            <div class="action-card" onclick="showGuidance('anxiety')">
+            <div class="action-card" onclick="showGuidanceDetail('anxiety')">
                 <div class="card-icon">😰</div>
                 <div class="card-title">Teen Anxiety</div>
                 <div class="card-description">Biblical approach to anxiety and worry</div>
             </div>
 
-            <div class="action-card" onclick="showGuidance('depression')">
+            <div class="action-card" onclick="showGuidanceDetail('depression')">
                 <div class="card-icon">😢</div>
                 <div class="card-title">Teen Depression</div>
                 <div class="card-description">Supporting through the valley</div>
             </div>
 
-            <div class="action-card" onclick="showGuidance('selfharm')">
+            <div class="action-card" onclick="showGuidanceDetail('selfharm')">
                 <div class="card-icon">💔</div>
                 <div class="card-title">Self-Harm</div>
                 <div class="card-description">Responding with love and wisdom</div>
             </div>
 
-            <div class="action-card" onclick="showGuidance('rebellion')">
+            <div class="action-card" onclick="showGuidanceDetail('rebellion')">
                 <div class="card-icon">😤</div>
                 <div class="card-title">Rebellion & Anger</div>
                 <div class="card-description">Setting boundaries with grace</div>
             </div>
 
-            <div class="action-card" onclick="showGuidance('addiction')">
+            <div class="action-card" onclick="showGuidanceDetail('addiction')">
                 <div class="card-icon">⛓️</div>
                 <div class="card-title">Addiction Issues</div>
                 <div class="card-description">Breaking chains through Christ</div>
+            </div>
+        </div>
+
+        <!-- Guidance Detail Screen -->
+        <div class="screen" id="guidanceDetail">
+            <div class="guidance-content">
+                <h2 id="guidanceTitle" style="color: var(--primary); margin-bottom: 20px;"></h2>
+                <div class="guidance-scripture" id="guidanceScripture"></div>
+                <div class="guidance-tips">
+                    <h4>Biblical Action Steps:</h4>
+                    <ul id="guidanceTips"></ul>
+                </div>
+                <div class="guidance-tips">
+                    <h4>Prayer Focus:</h4>
+                    <p id="guidancePrayer" style="font-style: italic; padding: 15px; background: #f9fafb; border-radius: 10px;"></p>
+                </div>
+                <button class="btn btn-secondary btn-full" onclick="showScreen('parentGuidance')">
+                    Back to Guidance Topics
+                </button>
             </div>
         </div>
 
@@ -1040,8 +1106,109 @@
                 <div class="prayer-text">
                     "I am fearfully and wonderfully made" - Psalm 139:14<br><br>
                     "I am a new creation in Christ" - 2 Corinthians 5:17<br><br>
-                    "I am God's masterpiece" - Ephesians 2:10
+                    "I am God's masterpiece" - Ephesians 2:10<br><br>
+                    "I can do all things through Christ" - Philippians 4:13<br><br>
+                    "Nothing can separate me from God's love" - Romans 8:38-39
                 </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" onclick="showScreen('teenHome')">
+                Back to Dashboard
+            </button>
+        </div>
+
+        <!-- Teen Coping Screen -->
+        <div class="screen" id="teenCoping">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--success);">Biblical Coping Skills</h2>
+            
+            <div class="guidance-content">
+                <h3 style="color: var(--primary); margin-bottom: 15px;">When Anxiety Hits</h3>
+                <div class="guidance-tips">
+                    <ul>
+                        <li>🌬️ Box Breathing: Breathe in 4, hold 4, out 4, hold 4 - repeat with "Lord, calm my storm"</li>
+                        <li>📝 Write it out: Journal your fears, then write God's promises next to each one</li>
+                        <li>🎵 Worship playlist: Create a playlist of songs that remind you of God's peace</li>
+                        <li>🚶 Prayer walk: Take a walk and tell God everything you're worried about</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="guidance-content">
+                <h3 style="color: var(--primary); margin-bottom: 15px;">When You're Angry</h3>
+                <div class="guidance-tips">
+                    <ul>
+                        <li>⏸️ Pause and pray: Count to 10 while saying "God, help me respond, not react"</li>
+                        <li>💪 Physical release: Do pushups, run, or punch a pillow (safely release energy)</li>
+                        <li>🎨 Create something: Draw, write, or make music to express feelings</li>
+                        <li>💬 Talk it out: Find a trusted adult who will listen without judging</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="guidance-content">
+                <h3 style="color: var(--primary); margin-bottom: 15px;">When You're Sad</h3>
+                <div class="guidance-tips">
+                    <ul>
+                        <li>😢 Let yourself cry: Jesus wept too - tears are healing</li>
+                        <li>☀️ Get sunlight: Go outside, even for 5 minutes</li>
+                        <li>🤗 Seek connection: Text a friend, hug a family member</li>
+                        <li>🙏 Lament prayers: Tell God exactly how you feel - He can handle it</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" onclick="showScreen('teenHome')">
+                Back to Dashboard
+            </button>
+        </div>
+
+        <!-- Teen Talk Screen -->
+        <div class="screen" id="teenTalk">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--success);">Safe People to Talk To</h2>
+            
+            <div class="resource-item">
+                <div class="resource-icon">👨‍👩‍👧</div>
+                <div class="resource-info">
+                    <h4>Your Parents</h4>
+                    <p>They love you more than you know. Try: "I need to talk about something hard"</p>
+                </div>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">⛪</div>
+                <div class="resource-info">
+                    <h4>Youth Pastor</h4>
+                    <p>Trained to help teens navigate tough times with faith</p>
+                </div>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">🏫</div>
+                <div class="resource-info">
+                    <h4>School Counselor</h4>
+                    <p>Professional help available at your school</p>
+                </div>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">📱</div>
+                <div class="resource-info">
+                    <h4>Crisis Text Line</h4>
+                    <p>Text HOME to 741741 for 24/7 support</p>
+                </div>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">👨‍⚕️</div>
+                <div class="resource-info">
+                    <h4>Christian Counselor</h4>
+                    <p>Professional therapy with biblical foundation</p>
+                </div>
+            </div>
+
+            <div class="crisis-alert">
+                <strong>Remember:</strong>
+                Asking for help is BRAVE, not weak. God often sends help through other people.
             </div>
 
             <button class="btn btn-primary btn-full" onclick="showScreen('teenHome')">
@@ -1071,12 +1238,73 @@
                 Contact your local emergency services or crisis helpline immediately
             </div>
 
+            <div class="guidance-content">
+                <h3 style="color: var(--danger);">Warning Signs Requiring Immediate Action:</h3>
+                <ul style="line-height: 2;">
+                    <li>Talking about wanting to die or kill themselves</li>
+                    <li>Looking for ways to kill themselves</li>
+                    <li>Talking about feeling hopeless or having no purpose</li>
+                    <li>Talking about feeling trapped or in unbearable pain</li>
+                    <li>Talking about being a burden to others</li>
+                    <li>Increasing use of alcohol or drugs</li>
+                    <li>Withdrawing from activities and isolating from family/friends</li>
+                    <li>Showing rage or talking about seeking revenge</li>
+                    <li>Displaying extreme mood swings</li>
+                </ul>
+            </div>
+
             <button class="btn btn-warning btn-full" onclick="showScreen('emergencyContacts')">
                 📞 Emergency Contacts
             </button>
 
-            <button class="btn btn-secondary btn-full" onclick="showScreen('parentHome')">
+            <button class="btn btn-secondary btn-full" onclick="navigateHome()">
                 Return to Dashboard
+            </button>
+        </div>
+
+        <!-- Emergency Contacts Screen -->
+        <div class="screen" id="emergencyContacts">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--danger);">Emergency Contacts</h2>
+            
+            <div class="crisis-alert">
+                <strong>IMMEDIATE DANGER</strong>
+                Call your local emergency number (911 in US)
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">📞</div>
+                <div class="resource-info">
+                    <h4>National Suicide Prevention Lifeline</h4>
+                    <p>988 or 1-800-273-8255 (24/7)</p>
+                </div>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">💬</div>
+                <div class="resource-info">
+                    <h4>Crisis Text Line</h4>
+                    <p>Text HOME to 741741</p>
+                </div>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">🏥</div>
+                <div class="resource-info">
+                    <h4>Local Hospital Emergency Room</h4>
+                    <p>Go immediately if in danger</p>
+                </div>
+            </div>
+
+            <div class="resource-item">
+                <div class="resource-icon">⛪</div>
+                <div class="resource-info">
+                    <h4>Pastor Emergency Line</h4>
+                    <p>Many churches have 24/7 pastoral support</p>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('emergency')">
+                Back to Crisis Protocol
             </button>
         </div>
 
@@ -1096,9 +1324,9 @@
                     My 15-year-old finally opened up about their anxiety. We're starting counseling next week. Prayers appreciated! God is faithful. 🙏
                 </div>
                 <div class="post-actions">
-                    <button class="post-action">🙏 Pray</button>
-                    <button class="post-action">💬 Comment</button>
-                    <button class="post-action">❤️ Support</button>
+                    <button class="post-action" onclick="prayForPost()">🙏 Pray</button>
+                    <button class="post-action" onclick="commentOnPost()">💬 Comment</button>
+                    <button class="post-action" onclick="supportPost()">❤️ Support</button>
                 </div>
             </div>
 
@@ -1114,9 +1342,27 @@
                     Breakthrough! After months of prayer and patience, my son is engaging in family devotionals again. Don't give up, parents!
                 </div>
                 <div class="post-actions">
-                    <button class="post-action">🙏 Pray</button>
-                    <button class="post-action">💬 Comment</button>
-                    <button class="post-action">❤️ Support</button>
+                    <button class="post-action" onclick="prayForPost()">🙏 Pray</button>
+                    <button class="post-action" onclick="commentOnPost()">💬 Comment</button>
+                    <button class="post-action" onclick="supportPost()">❤️ Support</button>
+                </div>
+            </div>
+
+            <div class="community-post">
+                <div class="post-header">
+                    <div class="post-avatar">RW</div>
+                    <div class="post-info">
+                        <div class="post-name">Rebecca W.</div>
+                        <div class="post-time">3 days ago</div>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Found my daughter self-harming. Heart is broken but trusting God. Meeting with youth pastor tomorrow. Please pray for wisdom.
+                </div>
+                <div class="post-actions">
+                    <button class="post-action" onclick="prayForPost()">🙏 Pray</button>
+                    <button class="post-action" onclick="commentOnPost()">💬 Comment</button>
+                    <button class="post-action" onclick="supportPost()">❤️ Support</button>
                 </div>
             </div>
 
@@ -1129,7 +1375,7 @@
         <div class="screen" id="resources">
             <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Professional Resources</h2>
             
-            <div class="resource-item" onclick="showResourceDetail('counselors')">
+            <div class="resource-item" onclick="showScreen('counselorDirectory')">
                 <div class="resource-icon">🧠</div>
                 <div class="resource-info">
                     <h4>Christian Counselors</h4>
@@ -1137,7 +1383,7 @@
                 </div>
             </div>
 
-            <div class="resource-item" onclick="showResourceDetail('pastors')">
+            <div class="resource-item" onclick="showScreen('youthPastors')">
                 <div class="resource-icon">⛪</div>
                 <div class="resource-info">
                     <h4>Youth Pastors</h4>
@@ -1145,7 +1391,7 @@
                 </div>
             </div>
 
-            <div class="resource-item" onclick="showResourceDetail('programs')">
+            <div class="resource-item" onclick="showScreen('treatmentPrograms')">
                 <div class="resource-icon">🏥</div>
                 <div class="resource-info">
                     <h4>Treatment Programs</h4>
@@ -1153,7 +1399,7 @@
                 </div>
             </div>
 
-            <div class="resource-item" onclick="showResourceDetail('books')">
+            <div class="resource-item" onclick="showScreen('bookResources')">
                 <div class="resource-icon">📚</div>
                 <div class="resource-info">
                     <h4>Recommended Books</h4>
@@ -1161,13 +1407,96 @@
                 </div>
             </div>
 
-            <div class="resource-item" onclick="showResourceDetail('online')">
+            <div class="resource-item" onclick="showScreen('onlineSupport')">
                 <div class="resource-icon">💻</div>
                 <div class="resource-info">
                     <h4>Online Support</h4>
                     <p>Virtual counseling and support groups</p>
                 </div>
             </div>
+        </div>
+
+        <!-- Counselor Directory Screen -->
+        <div class="screen" id="counselorDirectory">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Christian Counselor Directory</h2>
+            
+            <div class="guidance-content">
+                <h3>Finding the Right Counselor</h3>
+                <p style="line-height: 1.8; margin: 15px 0;">Look for counselors who are:</p>
+                <ul style="line-height: 2;">
+                    <li>Licensed in your state</li>
+                    <li>Experienced with teen/adolescent therapy</li>
+                    <li>Integrate biblical principles with evidence-based treatment</li>
+                    <li>Specialize in your teen's specific struggles</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>Questions to Ask:</h3>
+                <ul style="line-height: 2;">
+                    <li>"How do you integrate faith into therapy?"</li>
+                    <li>"What's your experience with teen depression/anxiety?"</li>
+                    <li>"Do you involve parents in the treatment process?"</li>
+                    <li>"What therapeutic approaches do you use?"</li>
+                    <li>"Do you offer crisis support between sessions?"</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>Resources to Find Counselors:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>American Association of Christian Counselors</strong> - aacc.net</li>
+                    <li><strong>Focus on the Family Counseling</strong> - focusonthefamily.com</li>
+                    <li><strong>Psychology Today</strong> - Filter for Christian counselors</li>
+                    <li><strong>Your Church</strong> - Ask for referrals</li>
+                    <li><strong>Insurance Provider</strong> - Check covered therapists</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('resources')">
+                Back to Resources
+            </button>
+        </div>
+
+        <!-- Book Resources Screen -->
+        <div class="screen" id="bookResources">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Recommended Books</h2>
+            
+            <div class="guidance-content">
+                <h3>For Parents:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>"Age of Opportunity"</strong> by Paul David Tripp</li>
+                    <li><strong>"The Anxious Teen"</strong> by Sheila Walsh</li>
+                    <li><strong>"Parenting Teens with Love and Logic"</strong> by Foster Cline</li>
+                    <li><strong>"Get Out of My Life"</strong> by Anthony Wolf</li>
+                    <li><strong>"Running on Empty"</strong> by Jonice Webb</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>For Teens:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>"Anxious for Nothing (Teen Edition)"</strong> by Max Lucado</li>
+                    <li><strong>"Uninvited"</strong> by Lysa TerKeurst</li>
+                    <li><strong>"Battlefield of the Mind for Teens"</strong> by Joyce Meyer</li>
+                    <li><strong>"You Are Loved"</strong> by Sally Lloyd-Jones</li>
+                    <li><strong>"Lies Young Women Believe"</strong> by Nancy DeMoss</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>For Family Study:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>"The Five Love Languages of Teenagers"</strong> by Gary Chapman</li>
+                    <li><strong>"Sticky Faith"</strong> by Kara Powell</li>
+                    <li><strong>"Tech-Wise Family"</strong> by Andy Crouch</li>
+                    <li><strong>"Growing Up Social"</strong> by Gary Chapman</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('resources')">
+                Back to Resources
+            </button>
         </div>
 
         <!-- Teen Check-In Screen -->
@@ -1182,24 +1511,349 @@
                     <li>"How can I pray for you specifically?"</li>
                     <li>"What's one thing I could do to support you better?"</li>
                     <li>"Have you felt God's presence lately?"</li>
+                    <li>"What's been hardest for you recently?"</li>
+                    <li>"Who in your friend group encourages your faith?"</li>
+                    <li>"What would make you feel more understood?"</li>
                 </ul>
             </div>
 
             <div class="prayer-box">
                 <div class="prayer-title">Warning Signs to Watch</div>
                 <div style="text-align: left;">
-                    <span class="tag red">Isolation</span>
-                    <span class="tag red">Sleep changes</span>
-                    <span class="tag red">Mood swings</span>
+                    <span class="tag red">Isolation from friends/family</span>
+                    <span class="tag red">Dramatic sleep changes</span>
+                    <span class="tag red">Severe mood swings</span>
                     <span class="tag red">Academic decline</span>
-                    <span class="tag red">Loss of interest</span>
+                    <span class="tag red">Loss of interest in activities</span>
                     <span class="tag red">Substance use</span>
                     <span class="tag red">Self-harm signs</span>
+                    <span class="tag red">Giving away possessions</span>
+                    <span class="tag red">Talking about death</span>
                 </div>
             </div>
 
             <button class="btn btn-primary btn-full" onclick="showScreen('assessmentTool')">
                 Start Assessment Tool
+            </button>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('parentHome')">
+                Back to Dashboard
+            </button>
+        </div>
+
+        <!-- Assessment Tool Screen -->
+        <div class="screen" id="assessmentTool">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Teen Wellness Assessment</h2>
+            
+            <div class="guidance-content">
+                <p style="margin-bottom: 20px;">Answer these questions about your teen's behavior over the past 2 weeks:</p>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <input type="checkbox" id="assess1"> Shows little interest in activities they used to enjoy
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <input type="checkbox" id="assess2"> Expresses feelings of hopelessness or worthlessness
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <input type="checkbox" id="assess3"> Has trouble sleeping or sleeps too much
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <input type="checkbox" id="assess4"> Shows significant changes in appetite or weight
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <input type="checkbox" id="assess5"> Isolates from friends and family
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <input type="checkbox" id="assess6"> Displays excessive worry or anxiety
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <input type="checkbox" id="assess7"> Has angry outbursts or irritability
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <input type="checkbox" id="assess8"> Talks about death or suicide
+                    </label>
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="calculateAssessment()">
+                    Get Results
+                </button>
+            </div>
+
+            <div id="assessmentResults" style="display: none;">
+                <div class="crisis-alert" id="assessmentAlert">
+                    <strong>Assessment Results</strong>
+                    <p id="assessmentMessage"></p>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('teenCheck')">
+                Back to Check-In Guide
+            </button>
+        </div>
+
+        <!-- Family Devotional Screen -->
+        <div class="screen" id="familyDevotional">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--accent);">Today's Family Devotional</h2>
+            
+            <div class="devotional-card">
+                <div class="devotional-header">
+                    <div class="devotional-day" id="devDay">1</div>
+                    <div class="devotional-title">
+                        <h3 id="devTitle">Building Trust Through Truth</h3>
+                        <p id="devVerse">Ephesians 4:15</p>
+                    </div>
+                </div>
+                <div class="devotional-content" id="devContent">
+                    <p><strong>Read Together:</strong> Ephesians 4:15 - "Speaking the truth in love, we will grow to become in every respect the mature body of him who is the head, that is, Christ."</p>
+                    
+                    <p style="margin-top: 15px;"><strong>Discuss:</strong></p>
+                    <ul style="line-height: 1.8; padding-left: 20px;">
+                        <li>What makes it hard to be honest sometimes?</li>
+                        <li>How can we create a safe space for truth in our family?</li>
+                        <li>Share a time when someone's honesty helped you</li>
+                    </ul>
+                    
+                    <p style="margin-top: 15px;"><strong>Activity:</strong> Each person shares one truth about how they're really doing - no advice giving, just listening and thanking them for sharing.</p>
+                    
+                    <p style="margin-top: 15px;"><strong>Prayer:</strong> "Lord, help us be a family that speaks truth in love. Give us courage to be honest and grace to listen well. Build trust between us. Amen."</p>
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" onclick="completeDevotional()">
+                Mark as Complete
+            </button>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('familyHome')">
+                Back to Family Center
+            </button>
+        </div>
+
+        <!-- Family Activities Screen -->
+        <div class="screen" id="familyActivities">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--accent);">Family Trust-Building Activities</h2>
+            
+            <div class="action-card family" onclick="showActivityDetail('gratitude')">
+                <div class="card-icon">🙏</div>
+                <div class="card-title">Gratitude Circle</div>
+                <div class="card-description">Each person shares 3 things they're grateful for</div>
+            </div>
+
+            <div class="action-card family" onclick="showActivityDetail('memories')">
+                <div class="card-icon">📸</div>
+                <div class="card-title">Memory Lane</div>
+                <div class="card-description">Share favorite family memories together</div>
+            </div>
+
+            <div class="action-card family" onclick="showActivityDetail('affirmations')">
+                <div class="card-icon">💝</div>
+                <div class="card-title">Affirmation Hot Seat</div>
+                <div class="card-description">Everyone says something they love about each person</div>
+            </div>
+
+            <div class="action-card family" onclick="showActivityDetail('questions')">
+                <div class="card-icon">❓</div>
+                <div class="card-title">20 Questions</div>
+                <div class="card-description">Deep questions to know each other better</div>
+            </div>
+
+            <div class="action-card family" onclick="showActivityDetail('service')">
+                <div class="card-icon">🤲</div>
+                <div class="card-title">Serve Together</div>
+                <div class="card-description">Bond through serving others as a family</div>
+            </div>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('familyHome')">
+                Back to Family Center
+            </button>
+        </div>
+
+        <!-- Family Prayer Screen -->
+        <div class="screen" id="familyPrayer">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--accent);">Family Prayer Time</h2>
+            
+            <div class="prayer-box">
+                <div class="prayer-title">Opening Prayer</div>
+                <div class="prayer-text">
+                    "Heavenly Father, we come before You as a family. Draw us closer to You and to each other. Help us be patient, kind, and understanding. Show us how to love like You love. In Jesus' name, Amen."
+                </div>
+            </div>
+
+            <div class="devotional-card">
+                <h3 style="margin-bottom: 15px;">Prayer Prompts</h3>
+                <ul style="line-height: 2; padding-left: 20px;">
+                    <li>Each person shares one prayer request</li>
+                    <li>Pray for each family member by name</li>
+                    <li>Thank God for something about your family</li>
+                    <li>Ask God to heal any hurts between you</li>
+                    <li>Pray for another family that's struggling</li>
+                </ul>
+            </div>
+
+            <div class="prayer-box">
+                <div class="prayer-title">Closing Blessing</div>
+                <div class="prayer-text">
+                    "May the Lord bless you and keep you. May He make His face shine upon you and be gracious to you. May He turn His face toward you and give you peace. Numbers 6:24-26"
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" onclick="savePrayerTime()">
+                Save This Prayer Time
+            </button>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('familyHome')">
+                Back to Family Center
+            </button>
+        </div>
+
+        <!-- Youth Pastors Screen -->
+        <div class="screen" id="youthPastors">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Connecting with Youth Pastors</h2>
+            
+            <div class="guidance-content">
+                <h3>What Youth Pastors Offer:</h3>
+                <ul style="line-height: 2;">
+                    <li>Regular check-ins with your teen</li>
+                    <li>Safe adult relationship outside the family</li>
+                    <li>Biblical guidance for teen issues</li>
+                    <li>Connection to positive peer groups</li>
+                    <li>Crisis support and intervention</li>
+                    <li>Parent coaching and resources</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>How to Connect:</h3>
+                <ol style="line-height: 2; padding-left: 20px;">
+                    <li>Call local churches and ask about youth programs</li>
+                    <li>Attend a youth service with your teen</li>
+                    <li>Schedule a meeting with the youth pastor</li>
+                    <li>Be honest about your teen's struggles</li>
+                    <li>Ask how they handle mental health issues</li>
+                    <li>Ensure they have appropriate training/boundaries</li>
+                </ol>
+            </div>
+
+            <div class="guidance-content">
+                <h3>Questions to Ask:</h3>
+                <ul style="line-height: 2;">
+                    <li>"What's your experience with teen mental health?"</li>
+                    <li>"How do you maintain confidentiality?"</li>
+                    <li>"When would you involve parents?"</li>
+                    <li>"Do you have crisis training?"</li>
+                    <li>"How can we work together to support my teen?"</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('resources')">
+                Back to Resources
+            </button>
+        </div>
+
+        <!-- Treatment Programs Screen -->
+        <div class="screen" id="treatmentPrograms">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Faith-Based Treatment Programs</h2>
+            
+            <div class="guidance-content">
+                <h3>Types of Programs:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>Outpatient Therapy:</strong> Weekly counseling while living at home</li>
+                    <li><strong>Intensive Outpatient (IOP):</strong> 3-5 days/week, several hours/day</li>
+                    <li><strong>Partial Hospitalization:</strong> Day treatment with evenings at home</li>
+                    <li><strong>Residential Treatment:</strong> 24/7 care in therapeutic environment</li>
+                    <li><strong>Wilderness Therapy:</strong> Outdoor therapeutic experiences</li>
+                    <li><strong>Therapeutic Boarding Schools:</strong> Education + treatment</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>Faith-Based Program Options:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>Teen Challenge:</strong> Addiction and life-controlling issues</li>
+                    <li><strong>Mercy Multiplied:</strong> Free residential program for young women</li>
+                    <li><strong>Rapha Treatment Centers:</strong> Christ-centered mental health care</li>
+                    <li><strong>Honey Lake Clinic:</strong> Biblical counseling and psychiatry</li>
+                    <li><strong>Focus on the Family Intensive:</strong> Family counseling programs</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>How to Choose:</h3>
+                <ol style="line-height: 2; padding-left: 20px;">
+                    <li>Get a professional assessment first</li>
+                    <li>Verify accreditation and licensing</li>
+                    <li>Ask about integration of faith and treatment</li>
+                    <li>Understand the admission process</li>
+                    <li>Check insurance coverage</li>
+                    <li>Visit the facility if possible</li>
+                    <li>Talk to other families who've been through the program</li>
+                </ol>
+            </div>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('resources')">
+                Back to Resources
+            </button>
+        </div>
+
+        <!-- Online Support Screen -->
+        <div class="screen" id="onlineSupport">
+            <h2 style="text-align: center; margin-bottom: 20px; color: var(--primary);">Online Support Resources</h2>
+            
+            <div class="guidance-content">
+                <h3>Virtual Counseling Platforms:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>Faithful Counseling:</strong> Christian therapists online</li>
+                    <li><strong>BetterHelp Teen:</strong> Specialized teen therapy (13-19)</li>
+                    <li><strong>Talkspace:</strong> Text, audio, and video therapy</li>
+                    <li><strong>MDLIVE:</strong> Psychiatry and therapy services</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>Support Groups & Communities:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>The Mighty:</strong> Mental health support community</li>
+                    <li><strong>NAMI Teen & Young Adult:</strong> Peer support groups</li>
+                    <li><strong>To Write Love on Her Arms:</strong> Depression/addiction support</li>
+                    <li><strong>HeartSupport:</strong> Faith-based mental health community</li>
+                    <li><strong>Door of Hope 4 Teens:</strong> Online support groups</li>
+                </ul>
+            </div>
+
+            <div class="guidance-content">
+                <h3>Apps for Teen Mental Health:</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>Calm:</strong> Meditation and sleep stories</li>
+                    <li><strong>Headspace for Teens:</strong> Mindfulness exercises</li>
+                    <li><strong>Sanvello:</strong> Mood tracking and coping tools</li>
+                    <li><strong>notOK:</strong> Crisis support app for teens</li>
+                    <li><strong>MindShift:</strong> Anxiety management for teens</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-secondary btn-full" onclick="showScreen('resources')">
+                Back to Resources
             </button>
         </div>
     </div>
@@ -1289,7 +1943,7 @@
             <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%); padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px;">
                 <h3 style="color: var(--primary);">Support This Work</h3>
                 <p>If this app has helped your family, consider supporting Depths to Heights. Your donation helps us create more free tools for families in crisis.</p>
-                <button class="btn btn-primary" style="margin-top: 10px;" onclick="alert('PayPal donation link will go here')">
+                <button class="btn btn-primary" style="margin-top: 10px;" onclick="window.open('https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U', '_blank')">
                     💜 Donate via PayPal
                 </button>
             </div>
@@ -1306,22 +1960,56 @@
         let audioContext;
         let isPlaying = false;
         let userType = null;
+        let currentDevotionalDay = 1;
+        let familyProgress = 3;
 
+        // Devotional Content Database
+        const devotionals = [
+            {
+                day: 1,
+                title: "Building Trust Through Truth",
+                verse: "Ephesians 4:15",
+                content: "Speaking the truth in love...",
+                activity: "Share one truth about how you're doing"
+            },
+            {
+                day: 2,
+                title: "Choosing Forgiveness",
+                verse: "Colossians 3:13",
+                content: "Bear with each other and forgive...",
+                activity: "Ask forgiveness for one specific thing"
+            },
+            {
+                day: 3,
+                title: "Practicing Patience",
+                verse: "James 1:19",
+                content: "Be quick to listen, slow to speak...",
+                activity: "Listen to each other for 2 minutes without interrupting"
+            }
+        ];
+
+        // Parent Prayers Database
+        const parentPrayers = [
+            "Lord, give me wisdom beyond my own understanding. Help me see my teen through Your eyes. Grant me patience when I'm frustrated, love when I'm hurt, and faith when I'm afraid.",
+            "Father, I feel overwhelmed today. Remind me that You love my child even more than I do. Guide my words and actions. Help me be the parent You've called me to be.",
+            "God, protect my teen's heart and mind today. Surround them with Your love. Give them courage to face their struggles and wisdom to make good choices.",
+            "Lord, heal the hurts in our family. Restore what's been broken. Build bridges where there are walls. Help us love each other well.",
+            "Father, I surrender my fears about my teen to You. You are in control. Give me peace that passes understanding and faith to trust Your plan."
+        ];
+
+        // Initialize Audio
         function initAudio() {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             
-            // Create hopeful, uplifting tone
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
             
             oscillator.type = 'sine';
             oscillator.frequency.setValueAtTime(261.63, audioContext.currentTime); // C4 note
-            
-            gainNode.gain.setValueAtTime(0.02, audioContext.currentTime); // Very quiet
+            gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
             
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-            
             oscillator.start();
             isPlaying = true;
         }
@@ -1351,7 +2039,23 @@
         function setUser(type) {
             userType = type;
             localStorage.setItem('generationRescueUser', type);
+            
+            // Load appropriate daily content
+            if (type === 'parent') {
+                loadDailyParentPrayer();
+            }
+            
             playClickSound();
+        }
+
+        // Load Daily Parent Prayer
+        function loadDailyParentPrayer() {
+            const today = new Date().getDay();
+            const prayerIndex = today % parentPrayers.length;
+            const prayerBox = document.querySelector('#dailyPrayerParent .prayer-text');
+            if (prayerBox) {
+                prayerBox.textContent = parentPrayers[prayerIndex];
+            }
         }
 
         // Navigation
@@ -1363,8 +2067,11 @@
             });
             
             setTimeout(() => {
-                document.getElementById(screenId).classList.add('active');
-                window.scrollTo(0, 0);
+                const screen = document.getElementById(screenId);
+                if (screen) {
+                    screen.classList.add('active');
+                    window.scrollTo(0, 0);
+                }
             }, 100);
         }
 
@@ -1387,28 +2094,82 @@
             });
             element.classList.add('selected');
             
-            // Save mood
             const today = new Date().toDateString();
             localStorage.setItem('teenMood_' + today, mood);
             
-            // Respond based on mood
+            // Create mood response in the existing devotional card
+            const devotionalCard = document.querySelector('#teenHome .devotional-card');
+            let responseHTML = '';
+            
             if (mood === 'help') {
-                setTimeout(() => {
-                    if (confirm('It sounds like you need support. Would you like to see crisis resources?')) {
-                        showScreen('emergency');
-                    }
-                }, 500);
+                responseHTML = `
+                    <div class="devotional-header">
+                        <div class="devotional-day">🆘</div>
+                        <div class="devotional-title">
+                            <h3>Let's Get You Help</h3>
+                            <p>You're brave for reaching out</p>
+                        </div>
+                    </div>
+                    <div class="devotional-content">
+                        <p>It takes courage to ask for help. You're not alone, and things can get better.</p>
+                        <button class="btn btn-warning" style="margin-top: 10px;" onclick="showScreen('emergency')">
+                            See Crisis Resources Now
+                        </button>
+                    </div>
+                `;
             } else if (mood === 'struggling') {
-                setTimeout(() => {
-                    alert('Remember: You are loved and valued. Consider talking to someone you trust today.');
-                }, 500);
+                responseHTML = `
+                    <div class="devotional-header">
+                        <div class="devotional-day">💛</div>
+                        <div class="devotional-title">
+                            <h3>It's Okay to Struggle</h3>
+                            <p>You are loved and valued</p>
+                        </div>
+                    </div>
+                    <div class="devotional-content">
+                        <p>Hard days don't last forever. Consider talking to someone you trust today. God sees you and loves you right where you are.</p>
+                        <button class="btn btn-primary" style="margin-top: 10px;" onclick="showScreen('teenTalk')">
+                            Find Someone to Talk To
+                        </button>
+                    </div>
+                `;
+            } else if (mood === 'great') {
+                responseHTML = `
+                    <div class="devotional-header">
+                        <div class="devotional-day">🎉</div>
+                        <div class="devotional-title">
+                            <h3>That's Wonderful!</h3>
+                            <p>Celebrate the good days</p>
+                        </div>
+                    </div>
+                    <div class="devotional-content">
+                        <p>Thank God for the good days - they're gifts! Remember this feeling when harder days come. You are capable of joy!</p>
+                    </div>
+                `;
+            } else if (mood === 'okay') {
+                responseHTML = `
+                    <div class="devotional-header">
+                        <div class="devotional-day">👍</div>
+                        <div class="devotional-title">
+                            <h3>Okay Is Okay</h3>
+                            <p>Not every day has to be amazing</p>
+                        </div>
+                    </div>
+                    <div class="devotional-content">
+                        <p>It's perfectly fine to have "okay" days. You don't have to be great all the time. God loves you on your ordinary days too.</p>
+                    </div>
+                `;
+            }
+            
+            if (responseHTML) {
+                devotionalCard.innerHTML = responseHTML;
             }
             
             playClickSound();
         }
 
-        // Show Guidance
-        function showGuidance(topic) {
+        // Show Guidance Detail
+        function showGuidanceDetail(topic) {
             const guidanceContent = {
                 anxiety: {
                     title: "Teen Anxiety",
@@ -1418,80 +2179,310 @@
                         "Create a 'worry box' where they can place written concerns",
                         "Practice breathing prayers: 'Lord, give peace'",
                         "Limit social media and news exposure",
-                        "Encourage physical activity and outdoor time"
-                    ]
+                        "Encourage physical activity and outdoor time",
+                        "Establish consistent sleep routines",
+                        "Consider professional Christian counseling"
+                    ],
+                    prayer: "Lord, calm the storm in my teen's mind. Replace anxiety with Your perfect peace. Help them trust You with their fears. Give me wisdom to support them well. In Jesus' name, Amen."
                 },
                 depression: {
                     title: "Teen Depression",
-                    scripture: "The Lord is close to the brokenhearted. - Psalm 34:18",
+                    scripture: "The Lord is close to the brokenhearted and saves those who are crushed in spirit. - Psalm 34:18",
                     tips: [
                         "Don't minimize their feelings - validate them",
                         "Maintain routines but be flexible",
                         "Encourage small, achievable goals",
                         "Seek professional Christian counseling",
-                        "Remind them: This is a season, not a sentence"
-                    ]
+                        "Remind them: This is a season, not a sentence",
+                        "Watch for warning signs of self-harm",
+                        "Create moments of joy without forcing happiness"
+                    ],
+                    prayer: "Father, lift my teen from this valley. Shine Your light into their darkness. Remind them of their worth and purpose. Use this struggle for their growth and Your glory. Amen."
                 },
                 selfharm: {
                     title: "Self-Harm",
-                    scripture: "You are the temple of God. - 1 Corinthians 3:16",
+                    scripture: "You are the temple of God and the Spirit of God dwells in you. - 1 Corinthians 3:16",
                     tips: [
                         "React with love, not anger or shock",
                         "Remove means of harm without shaming",
                         "Seek immediate professional help",
                         "Explore underlying pain together",
-                        "Provide alternative coping strategies"
-                    ]
+                        "Provide alternative coping strategies",
+                        "Increase supervision without being intrusive",
+                        "Address any trauma or abuse"
+                    ],
+                    prayer: "God, heal the pain that drives my teen to hurt themselves. Show them healthy ways to cope. Protect their body, Your temple. Give me courage to get the help we need. Amen."
                 },
                 rebellion: {
                     title: "Rebellion & Anger",
-                    scripture: "Fathers, do not provoke your children to anger. - Ephesians 6:4",
+                    scripture: "Fathers, do not provoke your children to anger, but bring them up in the discipline and instruction of the Lord. - Ephesians 6:4",
                     tips: [
                         "Set clear, consistent boundaries",
                         "Choose battles wisely",
                         "Listen more than you lecture",
                         "Model the behavior you want to see",
-                        "Pray for wisdom and patience daily"
-                    ]
+                        "Pray for wisdom and patience daily",
+                        "Look for underlying hurt or fear",
+                        "Maintain relationship over rules when possible"
+                    ],
+                    prayer: "Lord, soften both our hearts. Help me see past the rebellion to the pain beneath. Give me wisdom to know when to stand firm and when to show grace. Restore our relationship. Amen."
                 },
                 addiction: {
                     title: "Addiction Issues",
-                    scripture: "The truth will set you free. - John 8:32",
+                    scripture: "So if the Son sets you free, you will be free indeed. - John 8:36",
                     tips: [
                         "Address with love, not condemnation",
                         "Seek professional addiction counseling",
                         "Consider faith-based recovery programs",
                         "Create accountability with grace",
-                        "Celebrate small victories"
-                    ]
+                        "Celebrate small victories",
+                        "Address underlying trauma or pain",
+                        "Involve trusted community support"
+                    ],
+                    prayer: "Jesus, break the chains of addiction in my teen's life. Replace their craving with hunger for You. Give us strength for this battle. Bring freedom and restoration. Amen."
                 }
             };
 
             const guidance = guidanceContent[topic];
             if (guidance) {
-                alert(`${guidance.title}\n\n${guidance.scripture}\n\nKey Tips:\n${guidance.tips.join('\n')}}`);
+                document.getElementById('guidanceTitle').textContent = guidance.title;
+                document.getElementById('guidanceScripture').textContent = guidance.scripture;
+                
+                const tipsList = document.getElementById('guidanceTips');
+                tipsList.innerHTML = '';
+                guidance.tips.forEach(tip => {
+                    const li = document.createElement('li');
+                    li.textContent = tip;
+                    tipsList.appendChild(li);
+                });
+                
+                document.getElementById('guidancePrayer').textContent = guidance.prayer;
+                showScreen('guidanceDetail');
             }
         }
 
-        // Resource Details
-        function showResourceDetail(type) {
-            const resources = {
-                counselors: "Search for 'Christian counselors near me' or visit the American Association of Christian Counselors website.",
-                pastors: "Contact local churches and ask about youth ministry programs and pastoral counseling.",
-                programs: "Look for Celebrate Recovery, Teen Challenge, or other faith-based programs in your area.",
-                books: "Recommended: 'Age of Opportunity' by Paul Tripp, 'The Anxious Teen' by Sheila Walsh",
-                online: "Consider BetterHelp Christian counseling, Faithful Counseling, or online support groups."
+        // Activity Details - Changed from alert to modal
+        function showActivityDetail(activity) {
+            const activities = {
+                gratitude: {
+                    title: "Gratitude Circle",
+                    content: "Sit in a circle. Each person shares 3 things they're grateful for about each family member. No one can repeat what's been said. Watch hearts soften as you focus on the good in each other!"
+                },
+                memories: {
+                    title: "Memory Lane", 
+                    content: "Look through old photos together. Each person picks one and shares why it's special. Laugh about the funny ones. Remember God's faithfulness through the years. This builds connection through shared history."
+                },
+                affirmations: {
+                    title: "Affirmation Hot Seat",
+                    content: "One person sits in the 'hot seat' while everyone else says one thing they love or admire about them. No deflecting compliments - just receive! This builds self-worth and family bonds."
+                },
+                questions: {
+                    title: "20 Questions",
+                    content: "Take turns asking deep questions like 'What's your biggest dream?' or 'When do you feel most loved?' or 'What's your favorite family memory?' Really listen to the answers without judgment."
+                },
+                service: {
+                    title: "Serve Together",
+                    content: "Choose a service project - serve at a food bank, visit nursing home, help a neighbor, or do yard work for someone in need. Working together for others bonds your hearts and gives perspective."
+                }
             };
             
-            alert(resources[type] || "Resource information coming soon.");
+            const activityData = activities[activity];
+            if (activityData) {
+                // Create and show activity detail in guidance detail screen
+                document.getElementById('guidanceTitle').textContent = activityData.title;
+                document.getElementById('guidanceScripture').textContent = "Love one another deeply, from the heart. - 1 Peter 1:22";
+                
+                const tipsList = document.getElementById('guidanceTips');
+                tipsList.innerHTML = `<li>${activityData.content}</li>`;
+                
+                document.getElementById('guidancePrayer').textContent = "Lord, use this activity to draw our family closer to You and to each other. Break down walls and build bridges of love. Amen.";
+                showScreen('guidanceDetail');
+            }
+        }
+
+        // Assessment Tool
+        function calculateAssessment() {
+            let score = 0;
+            for (let i = 1; i <= 8; i++) {
+                if (document.getElementById('assess' + i).checked) {
+                    score++;
+                    if (i === 8) score += 2; // Talking about death weighted heavier
+                }
+            }
+            
+            const resultsDiv = document.getElementById('assessmentResults');
+            const message = document.getElementById('assessmentMessage');
+            const alert = document.getElementById('assessmentAlert');
+            
+            if (score >= 6) {
+                alert.style.background = 'linear-gradient(135deg, #ef4444 0%, #f87171 100%)';
+                message.textContent = 'Your teen needs immediate professional help. Please contact a counselor or crisis line today.';
+            } else if (score >= 3) {
+                alert.style.background = 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)';
+                message.textContent = 'Your teen is showing concerning signs. Consider scheduling an appointment with a counselor.';
+            } else {
+                alert.style.background = 'linear-gradient(135deg, #10b981 0%, #34d399 100%)';
+                message.textContent = 'Continue monitoring and maintaining open communication. Use the check-in tools regularly.';
+            }
+            
+            resultsDiv.style.display = 'block';
         }
 
         // Community Functions
-        function showNewPost() {
-            const post = prompt("Share your story or prayer request:");
-            if (post) {
-                alert("Your post has been shared with the community. You'll receive prayer and support soon.");
+        function prayForPost() {
+            const btn = event.target;
+            btn.innerHTML = '🙏 Praying';
+            btn.style.color = 'var(--primary)';
+            btn.disabled = true;
+        }
+
+        function commentOnPost() {
+            // Show comment input inline
+            const postDiv = event.target.closest('.community-post');
+            const existingComment = postDiv.querySelector('.comment-input');
+            
+            if (!existingComment) {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment-input';
+                commentDiv.style.marginTop = '15px';
+                commentDiv.innerHTML = `
+                    <input type="text" class="input-field" placeholder="Share an encouraging word..." />
+                    <button class="btn btn-primary" style="margin-top: 10px;" onclick="submitComment(this)">
+                        Send Encouragement
+                    </button>
+                `;
+                postDiv.appendChild(commentDiv);
             }
+        }
+
+        function submitComment(btn) {
+            const input = btn.previousElementSibling;
+            if (input.value) {
+                const commentDiv = btn.parentElement;
+                commentDiv.innerHTML = `
+                    <div style="background: #f0f7ff; padding: 10px; border-radius: 10px; margin-top: 10px;">
+                        <strong>Your comment:</strong> ${input.value}
+                    </div>
+                `;
+            }
+        }
+
+        function supportPost() {
+            const btn = event.target;
+            btn.innerHTML = '❤️ Supported';
+            btn.style.color = 'var(--danger)';
+            btn.disabled = true;
+        }
+
+        function showNewPost() {
+            // Create inline post form instead of prompt
+            const communityDiv = document.getElementById('community');
+            const existingForm = communityDiv.querySelector('.new-post-form');
+            
+            if (!existingForm) {
+                const formDiv = document.createElement('div');
+                formDiv.className = 'new-post-form guidance-content';
+                formDiv.innerHTML = `
+                    <h3>Share Your Story</h3>
+                    <textarea class="input-field" rows="4" placeholder="Share your story or prayer request..."></textarea>
+                    <button class="btn btn-primary" onclick="submitNewPost(this)">Share with Community</button>
+                    <button class="btn btn-secondary" onclick="cancelNewPost(this)">Cancel</button>
+                `;
+                
+                // Insert after the header
+                const header = communityDiv.querySelector('h2');
+                header.after(formDiv);
+            }
+        }
+
+        function submitNewPost(btn) {
+            const textarea = btn.parentElement.querySelector('textarea');
+            if (textarea.value) {
+                // Create new post element
+                const newPost = document.createElement('div');
+                newPost.className = 'community-post';
+                newPost.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-avatar" style="background: var(--gradient3);">ME</div>
+                        <div class="post-info">
+                            <div class="post-name">You</div>
+                            <div class="post-time">Just now</div>
+                        </div>
+                    </div>
+                    <div class="post-content">${textarea.value}</div>
+                    <div class="post-actions">
+                        <button class="post-action" onclick="prayForPost()">🙏 Pray</button>
+                        <button class="post-action" onclick="commentOnPost()">💬 Comment</button>
+                        <button class="post-action" onclick="supportPost()">❤️ Support</button>
+                    </div>
+                `;
+                
+                // Insert after form
+                const form = btn.parentElement;
+                form.after(newPost);
+                
+                // Save to localStorage
+                const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+                posts.push({
+                    content: textarea.value,
+                    date: new Date().toISOString(),
+                    author: 'You'
+                });
+                localStorage.setItem('communityPosts', JSON.stringify(posts));
+                
+                // Remove form
+                form.remove();
+            }
+        }
+
+        function cancelNewPost(btn) {
+            btn.parentElement.remove();
+        }
+
+        // Devotional Functions
+        function completeDevotional() {
+            currentDevotionalDay++;
+            familyProgress = Math.min(100, (currentDevotionalDay / 30) * 100);
+            
+            document.getElementById('devotionalDay').textContent = currentDevotionalDay;
+            document.getElementById('progressPercent').textContent = Math.round(familyProgress) + '%';
+            document.getElementById('progressBar').style.width = familyProgress + '%';
+            
+            localStorage.setItem('devotionalProgress', currentDevotionalDay);
+            
+            // Show completion message inline
+            const devotionalScreen = document.getElementById('familyDevotional');
+            const completionDiv = document.createElement('div');
+            completionDiv.className = 'prayer-box';
+            completionDiv.innerHTML = `
+                <div class="prayer-title">✅ Day ${currentDevotionalDay - 1} Complete!</div>
+                <div class="prayer-text">Great job completing today's devotional! See you tomorrow for Day ${currentDevotionalDay}.</div>
+            `;
+            
+            // Insert before buttons
+            const firstButton = devotionalScreen.querySelector('.btn');
+            firstButton.parentElement.insertBefore(completionDiv, firstButton);
+            
+            // Auto-return after 2 seconds
+            setTimeout(() => {
+                showScreen('familyHome');
+            }, 2000);
+        }
+
+        function savePrayerTime() {
+            const today = new Date().toDateString();
+            localStorage.setItem('familyPrayer_' + today, 'completed');
+            
+            // Show saved message inline
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✅ Prayer Time Saved!';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 2000);
         }
 
         // Modal Functions
@@ -1515,14 +2506,12 @@
             const gainNode = audioContext.createGain();
             
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-            
+            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
             gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
             
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-            
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.1);
         }
@@ -1535,12 +2524,21 @@
                 userType = savedUser;
             }
             
-            // Initialize audio on first interaction
-            document.addEventListener('click', function initAudioContext() {
-                if (!audioContext) {
-                    // Audio will init on toggle
+            // Load devotional progress
+            const savedProgress = localStorage.getItem('devotionalProgress');
+            if (savedProgress) {
+                currentDevotionalDay = parseInt(savedProgress);
+                familyProgress = Math.min(100, (currentDevotionalDay / 30) * 100);
+                
+                if (document.getElementById('devotionalDay')) {
+                    document.getElementById('devotionalDay').textContent = currentDevotionalDay;
+                    document.getElementById('progressPercent').textContent = Math.round(familyProgress) + '%';
+                    document.getElementById('progressBar').style.width = familyProgress + '%';
                 }
-            }, { once: true });
+            }
+            
+            // Load daily parent prayer
+            loadDailyParentPrayer();
         });
 
         // Modal background click to close
